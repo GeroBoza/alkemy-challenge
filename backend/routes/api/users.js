@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const usersApiController = require("../../controllers");
+const usersApiController = require("../../controllers/usersApiController");
 
-router.get("/");
+router.post("/login", usersApiController.login);
+router.post("/register", usersApiController.register);
+
+module.exports = router;

@@ -13,7 +13,7 @@ module.exports = (sequelize, dataTypes) => {
     );
 
     Operation_category.associate = (models) => {
-        Operation.belongsToMany(models.Operation, {
+        Operation_category.hasMany(models.Operation, {
             as: "operations",
             foreignKey: "operation_category_id",
         });
