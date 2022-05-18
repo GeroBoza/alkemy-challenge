@@ -8,6 +8,7 @@ const controller = {
                 where: {
                     user_id: userId,
                 },
+                order: ["id"],
                 include: ["operation_type", "operation_category"],
             });
             res.json(operations);
