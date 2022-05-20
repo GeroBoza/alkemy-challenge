@@ -13,9 +13,12 @@ import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 
+import "./styles.scss";
+
 const pages = [
     { name: "Operaciones", url: "/operations" },
     { name: "Nueva operacion", url: "/operations/new" },
+    { name: "Nueva categoría", url: "/categories/new" },
 ];
 const settings = ["Cerrar sesion"];
 
@@ -41,7 +44,7 @@ const Navbar = () => {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar className="app-bar" position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography

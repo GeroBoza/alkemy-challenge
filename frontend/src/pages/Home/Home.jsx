@@ -57,6 +57,11 @@ const Home = () => {
                 </Grid>
 
                 <Grid item xs={12}>
+                    <Grid item xs={12}>
+                        <Typography variant="p" fontWeight={"bold"}>
+                            Últimas 10 operaciones:
+                        </Typography>
+                    </Grid>
                     <OperatiosTable
                         rows={operations}
                         columns={columns}

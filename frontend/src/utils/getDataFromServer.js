@@ -20,3 +20,23 @@ export async function getOperationsByType(typeId) {
 
     return operationsByType;
 }
+
+export async function getOperationTypes() {
+    const getResult = await fetch(`http://localhost:3000/operations/types`);
+    const operationTypes = await getResult.json();
+
+    return operationTypes;
+}
+export async function getOperationCategories() {
+    const getResult = await fetch(`http://localhost:3000/categories`);
+    const operationCategories = await getResult.json();
+
+    return operationCategories;
+}
+
+// export async function getOperationsByCategory(catId) {
+//     const getResult = await fetch(`http://localhost:3000/category/${catId}`);
+//     const operationsByCategory = await getResult.json();
+
+//     return operationsByCategory;
+// }
