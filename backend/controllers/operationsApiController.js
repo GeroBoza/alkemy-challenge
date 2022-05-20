@@ -27,7 +27,27 @@ const controller = {
                 include: ["operation_type", "operation_category"],
                 limit: 10,
             });
-            res.json(operations);
+
+            let operationsJSON = [];
+            operations.forEach((operation) => {
+                let newOperation = {
+                    id: operation.id,
+                    concept: operation.concept,
+                    amount: operation.amount,
+                    date: operation.date,
+                    operation_type:
+                        operation.operation_type !== null
+                            ? operation.operation_type.name
+                            : "Sin tipo",
+                    operation_category:
+                        operation.operation_category !== null
+                            ? operation.operation_category.name
+                            : "Sin categoría",
+                };
+
+                operationsJSON.push(newOperation);
+            });
+            res.json(operationsJSON);
         } catch (error) {
             res.send(error);
         }
@@ -43,7 +63,26 @@ const controller = {
                     user_id: userId,
                 },
             });
-            res.json(operations);
+            let operationsJSON = [];
+            operations.forEach((operation) => {
+                let newOperation = {
+                    id: operation.id,
+                    concept: operation.concept,
+                    amount: operation.amount,
+                    date: operation.date,
+                    operation_type:
+                        operation.operation_type !== null
+                            ? operation.operation_type.name
+                            : "Sin tipo",
+                    operation_category:
+                        operation.operation_category !== null
+                            ? operation.operation_category.name
+                            : "Sin categoría",
+                };
+
+                operationsJSON.push(newOperation);
+            });
+            res.json(operationsJSON);
         } catch (error) {
             res.send(error);
         }
