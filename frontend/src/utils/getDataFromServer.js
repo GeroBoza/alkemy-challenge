@@ -34,9 +34,11 @@ export async function getOperationCategories() {
     return operationCategories;
 }
 
-// export async function getOperationsByCategory(catId) {
-//     const getResult = await fetch(`http://localhost:3000/category/${catId}`);
-//     const operationsByCategory = await getResult.json();
+export async function getOperationsByCategory(catId) {
+    const getResult = await fetch(
+        `http://localhost:3000/operations/category/${catId}`
+    );
+    const operationsByCategory = await getResult.json();
 
-//     return operationsByCategory;
-// }
+    return operationsByCategory;
+}
