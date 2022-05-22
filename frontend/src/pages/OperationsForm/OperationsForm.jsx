@@ -204,6 +204,12 @@ const OperationsForm = (props) => {
                 />
                 <TextField
                     error={formErrors.operation_type_id}
+                    disabled={mode === "edit"}
+                    helperText={
+                        mode === "edit"
+                            ? "No es posible modificar el tipo de operacion"
+                            : ""
+                    }
                     required
                     fullWidth
                     select
