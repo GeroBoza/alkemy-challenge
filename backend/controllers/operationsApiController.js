@@ -20,6 +20,19 @@ const controller = {
             res.send(error);
         }
     },
+    getOperation: async (req, res) => {
+        try {
+            let id = req.params.id;
+            console.log(id);
+            let operation = await Operation.findByPk(id, {
+                include: ["operation_type", "operation_category"],
+            });
+
+            res.json(operation);
+        } catch (error) {
+            res.send(error);
+        }
+    },
     getLastTenOperations: async (req, res) => {
         try {
             let userId = 1; //RECIBIR POR PARAM DESDE EL FRONT
@@ -189,6 +202,21 @@ const controller = {
                 operation_type_id: req.body.operation_type_id,
             });
             res.status(200).send({ message: "Operation created" });
+        } catch (error) {
+            res.status(400);
+            res.send(error);
+        }
+    },
+
+    deleteOperation: async (req, res) => {
+        try {
+            console.log(req.body.id);
+            await Operation.destroy({
+                where: {
+                    id: req.body.id,
+                },
+            });
+            res.status(200).send({ message: "Operation deleted" });
         } catch (error) {
             res.status(400);
             res.send(error);

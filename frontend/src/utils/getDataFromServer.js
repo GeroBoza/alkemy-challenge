@@ -12,6 +12,13 @@ export async function getLastTenOperations() {
     return allOperations;
 }
 
+export async function getOperation(id) {
+    const getResult = await fetch(`http://localhost:3000/operations/${id}`);
+    const operation = await getResult.json();
+
+    return operation;
+}
+
 export async function getOperationsByType(typeId) {
     const getResult = await fetch(
         `http://localhost:3000/operations/type/${typeId}`

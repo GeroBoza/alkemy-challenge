@@ -10,6 +10,9 @@ router.get("/types", operationsApiController.getOperationsTypes);
 router.get("/type/:id", operationsApiController.getOperationsByType);
 router.get("/category/:id", operationsApiController.getOperationsByCategory);
 
+router.get("/:id", operationsApiController.getOperation);
+
 router.post("/new", operationsApiController.newOperation);
+router.post("/delete", operationsApiController.deleteOperation);
 
 module.exports = router;

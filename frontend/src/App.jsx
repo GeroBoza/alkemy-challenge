@@ -9,7 +9,7 @@ import {
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import NewCategory from "./pages/NewCategory/NewCategory";
-import NewOperation from "./pages/NewOperation/NewOperation";
+import OperationsForm from "./pages/OperationsForm/OperationsForm";
 import Operations from "./pages/Operations/Operations";
 function App() {
     return (
@@ -20,7 +20,11 @@ function App() {
                 <Route path="/operations" element={<Operations />}></Route>
                 <Route
                     path="/operations/new"
-                    element={<NewOperation />}
+                    element={<OperationsForm mode="create" />}
+                ></Route>
+                <Route
+                    path="/operations/edit/:id"
+                    element={<OperationsForm mode="edit" />}
                 ></Route>
                 <Route path="/categories/new" element={<NewCategory />}></Route>
                 <Route path="*" element={<Navigate to="/"></Navigate>}></Route>

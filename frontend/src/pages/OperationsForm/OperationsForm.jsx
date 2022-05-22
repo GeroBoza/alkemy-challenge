@@ -17,10 +17,14 @@ import "./styles.scss";
 import {
     getOperationCategories,
     getOperationTypes,
+    getOperation,
 } from "../../utils/getDataFromServer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const NewOperation = () => {
+const OperationsForm = (props) => {
+    const { mode } = props;
+    const { id } = useParams();
+
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         concept: "",
@@ -46,6 +50,18 @@ const NewOperation = () => {
     const [showAlertFail, setShowAlertFail] = useState(false);
     const [showAlertOk, setShowAlertOk] = useState(false);
 
+    const fetchOperation = async () => {
+        const operation = await getOperation(id);
+        setFormValues({
+            concept: operation.concept,
+            amount: operation.amount,
+            date: operation.date,
+            user_id: 1,
+            operation_type_id: operation.operation_type.id,
+            operation_category_id: operation.operation_category.id,
+        });
+    };
+
     useEffect(() => {
         async function fetchOperationsTypes() {
             const types = await getOperationTypes();
@@ -58,7 +74,19 @@ const NewOperation = () => {
 
         fetchOperationsTypes();
         fetchOperationsCategories();
-    }, []);
+        if (mode === "edit") {
+            fetchOperation();
+        } else if (mode === "create") {
+            setFormValues({
+                concept: "",
+                amount: "",
+                date: "",
+                user_id: 1,
+                operation_type_id: "",
+                operation_category_id: "",
+            });
+        }
+    }, [mode]);
 
     const handleValidations = (evt) => {
         evt.preventDefault();
@@ -95,12 +123,13 @@ const NewOperation = () => {
     };
     const saveData = async () => {
         setShowLoader(true);
+        const url = mode !== "edit" ? "new" : "edit";
+
         try {
             const res = await axios.post(
-                "http://localhost:3000/operations/new",
+                `http://localhost:3000/operations/${url}`,
                 formValues
             );
-            console.log(res);
             if (res.status === 200) {
                 setShowAlertOk(true);
                 setShowLoader(false);
@@ -125,7 +154,7 @@ const NewOperation = () => {
                 onSubmit={handleValidations}
             >
                 <Typography variant="h4" textAlign={"center"} color="initial">
-                    Nueva operación
+                    {mode !== "edit" ? "Nueva operación" : "Editar operación"}
                 </Typography>
                 <TextField
                     error={formErrors.concept}
@@ -261,4 +290,4 @@ const NewOperation = () => {
     );
 };
 
-export default NewOperation;
+export default OperationsForm;
