@@ -281,7 +281,10 @@ const OperationsForm = (props) => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             {showAlertOk === true ? (
-                <Alert severity="success">Operación creada con éxito!</Alert>
+                <Alert severity="success">
+                    Operación {mode !== "edit" ? "creada" : "editada"} con
+                    éxito!
+                </Alert>
             ) : (
                 ""
             )}
