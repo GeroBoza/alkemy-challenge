@@ -123,7 +123,7 @@ const OperationsForm = (props) => {
     };
     const saveData = async () => {
         setShowLoader(true);
-        const url = mode !== "edit" ? "new" : "edit";
+        const url = mode !== "edit" ? "new" : `edit/?id=${id}`;
 
         try {
             const res = await axios.post(

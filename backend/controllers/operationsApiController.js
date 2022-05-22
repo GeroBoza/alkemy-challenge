@@ -208,6 +208,34 @@ const controller = {
         }
     },
 
+    editOperation: async (req, res) => {
+        try {
+            const opId = req.query.id;
+            let category =
+                req.body.operation_category_id !== ""
+                    ? req.body.operation_category_id
+                    : null;
+            console.log(req.body);
+            await Operation.update(
+                {
+                    concept: req.body.concept,
+                    amount: parseFloat(req.body.amount),
+                    date: req.body.date,
+                    operation_category_id: category,
+                },
+                {
+                    where: {
+                        id: opId,
+                    },
+                }
+            );
+            res.status(200).send({ message: "Operation updated" });
+        } catch (error) {
+            res.status(400);
+            res.send(error);
+        }
+    },
+
     deleteOperation: async (req, res) => {
         try {
             console.log(req.body.id);

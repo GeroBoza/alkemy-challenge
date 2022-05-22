@@ -12,7 +12,9 @@ router.get("/category/:id", operationsApiController.getOperationsByCategory);
 
 router.get("/:id", operationsApiController.getOperation);
 
+// CRUD
 router.post("/new", operationsApiController.newOperation);
+router.post("/edit", operationsApiController.editOperation);
 router.post("/delete", operationsApiController.deleteOperation);
 
 module.exports = router;
