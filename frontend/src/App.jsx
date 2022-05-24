@@ -11,12 +11,14 @@ import Home from "./pages/Home/Home";
 import NewCategory from "./pages/NewCategory/NewCategory";
 import OperationsForm from "./pages/OperationsForm/OperationsForm";
 import Operations from "./pages/Operations/Operations";
+import AuthForm from "./pages/Auth/AuthForm";
 function App() {
     return (
         <Router>
             <Navbar></Navbar>
             <Routes>
                 <Route path="/" element={<Home />}></Route>
+                <Route path="/auth" element={<AuthForm />}></Route>
                 <Route path="/operations" element={<Operations />}></Route>
                 <Route
                     path="/operations/new"
