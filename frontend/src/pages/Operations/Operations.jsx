@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Alert,
@@ -26,12 +26,12 @@ import {
 } from "../../utils/getDataFromServer";
 import axios from "axios";
 
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Operations = () => {
     const navigate = useNavigate();
 
-    const [auth, setAuth] = useContext(AuthContext);
+    const { auth } = useAuth();
 
     const [inOperations, setInOperations] = useState([]);
     const [outOperations, setOutOperations] = useState([]);

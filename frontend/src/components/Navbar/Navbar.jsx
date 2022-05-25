@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,7 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 import "./styles.scss";
 
@@ -21,12 +21,12 @@ const pages = [
     { name: "Nueva operacion", url: "/operations/new" },
     { name: "Nueva categoría", url: "/categories/new" },
 ];
-// const settings = ["Cerrar sesion"];
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [auth, setAuth] = useContext(AuthContext);
+
+    const { setAuth } = useAuth();
 
     const navigate = useNavigate();
 

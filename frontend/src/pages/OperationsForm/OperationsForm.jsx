@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {
@@ -20,20 +20,19 @@ import {
     getOperation,
 } from "../../utils/getDataFromServer";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const OperationsForm = (props) => {
     const { mode } = props;
     const { id } = useParams();
 
-    const [auth, setAuth] = useContext(AuthContext);
+    const { auth } = useAuth();
 
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         concept: "",
         amount: "",
         date: "",
-        user_id: 1,
         operation_type_id: "",
         operation_category_id: "",
     });
@@ -53,17 +52,6 @@ const OperationsForm = (props) => {
     const [showAlertFail, setShowAlertFail] = useState(false);
     const [showAlertOk, setShowAlertOk] = useState(false);
 
-    const fetchOperation = async () => {
-        const operation = await getOperation(id);
-        setFormValues({
-            concept: operation.concept,
-            amount: operation.amount,
-            date: operation.date,
-            operation_type_id: operation.operation_type.id,
-            operation_category_id: operation.operation_category.id,
-        });
-    };
-
     useEffect(() => {
         async function fetchOperationsTypes() {
             const types = await getOperationTypes();
@@ -74,6 +62,22 @@ const OperationsForm = (props) => {
             setOperationCategories(categories);
         }
 
+        const fetchOperation = async () => {
+            const res = await getOperation(id, auth);
+
+            if (res.status === 400) {
+                navigate("/operations");
+                return;
+            }
+            setFormValues({
+                concept: res.concept,
+                amount: res.amount,
+                date: res.date,
+                operation_type_id: res.operation_type.id,
+                operation_category_id: res.operation_category.id,
+            });
+        };
+
         fetchOperationsTypes();
         fetchOperationsCategories();
         if (mode === "edit") {
@@ -83,12 +87,11 @@ const OperationsForm = (props) => {
                 concept: "",
                 amount: "",
                 date: "",
-                user_id: 1,
                 operation_type_id: "",
                 operation_category_id: "",
             });
         }
-    }, [mode]);
+    }, [mode, auth, id]);
 
     const handleValidations = (evt) => {
         evt.preventDefault();

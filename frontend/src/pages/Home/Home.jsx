@@ -1,15 +1,15 @@
 import { Container, Grid, Typography } from "@mui/material";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import OperatiosTable from "../../components/OperationsTable/OperationsTable";
 import {
     getBalance,
     getLastTenOperations,
 } from "../../utils/getDataFromServer";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
-    const [auth, setAuth] = useContext(AuthContext);
+    const { auth } = useAuth();
 
     const [balance, setBalance] = useState(0);
     const [operations, setOperations] = useState([]);
@@ -26,7 +26,7 @@ const Home = () => {
 
         fetchAllOperations();
         fetchOperationsBalance();
-    }, []);
+    }, [auth]);
 
     const columns = [
         { field: "id", headerName: "ID", width: 150 },

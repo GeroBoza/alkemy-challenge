@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import {
     BrowserRouter as Router,
@@ -6,26 +6,22 @@ import {
     Route,
     Routes,
 } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
+
 import Home from "./pages/Home/Home";
 import NewCategory from "./pages/NewCategory/NewCategory";
 import OperationsForm from "./pages/OperationsForm/OperationsForm";
 import Operations from "./pages/Operations/Operations";
 import AuthForm from "./pages/Auth/AuthForm";
 // import { AuthProvider } from "./context/AuthContext";
-import { AuthContext, useAuth } from "./context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import WithNav from "./pages/Layout/WithNav";
 import WithoutNav from "./pages/Layout/WithoutNav";
 
 function App() {
-    const [auth, setAuth] = useContext(AuthContext);
-    // const { auth } = useAuth();
-    // console.log(auth);
+    const { auth } = useAuth();
+
     return (
         <Router>
-            {/* <Navbar></Navbar> */}
-
-            {/* {!auth ? <Navigate to="/auth"></Navigate> : ""} */}
             <Routes>
                 <Route
                     element={

@@ -23,10 +23,15 @@ const controller = {
     getOperation: async (req, res) => {
         try {
             let id = req.params.id;
+            let userId = req.userId;
 
             let operation = await Operation.findByPk(id, {
                 include: ["operation_type", "operation_category"],
             });
+
+            if (!operation || operation.user_id !== userId) {
+                return res.status(400).send({ status: 400, message: "Fail" });
+            }
 
             res.json(operation);
         } catch (error) {

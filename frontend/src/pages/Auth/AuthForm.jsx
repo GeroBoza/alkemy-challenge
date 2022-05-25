@@ -8,16 +8,16 @@ import {
     Backdrop,
     CircularProgress,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import GenericForm from "../../components/GenericForm/GenericForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const AuthForm = () => {
     const navigate = useNavigate();
 
-    const [auth, setAuth] = useContext(AuthContext);
+    const { setAuth } = useAuth();
 
     const [mode, setMode] = useState("signIn");
     const [showLoader, setShowLoader] = useState(false);

@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const verifyJWT = (req, res, next) => {
     const token = req.headers["authorization"];
-    console.log(req.headers);
-    console.log("token recibido", token);
+    // console.log(req.headers);
+    // console.log("token recibido", token);
     if (!token) {
         res.send("No hay token");
     } else {
