@@ -7,7 +7,7 @@ const {
 const controller = {
     getAllOperations: async (req, res) => {
         try {
-            let userId = 1; //RECIBIR POR PARAM DESDE EL FRONT
+            let userId = req.userId; //RECIBIR POR PARAM DESDE EL FRONT
             let operations = await Operation.findAll({
                 where: {
                     user_id: userId,
@@ -23,7 +23,7 @@ const controller = {
     getOperation: async (req, res) => {
         try {
             let id = req.params.id;
-            console.log(id);
+
             let operation = await Operation.findByPk(id, {
                 include: ["operation_type", "operation_category"],
             });
@@ -35,7 +35,7 @@ const controller = {
     },
     getLastTenOperations: async (req, res) => {
         try {
-            let userId = 1; //RECIBIR POR PARAM DESDE EL FRONT
+            let userId = req.userId; //RECIBIR POR PARAM DESDE EL FRONT
             let operations = await Operation.findAll({
                 where: {
                     user_id: userId,
@@ -71,7 +71,7 @@ const controller = {
     },
     getOperationsByType: async (req, res) => {
         let id = req.params.id;
-        let userId = 1; //RECIBIR POR PARAM DESDE EL FRONT
+        let userId = req.userId; //RECIBIR POR PARAM DESDE EL FRONT
         try {
             let operations = await Operation.findAll({
                 include: ["operation_type", "operation_category"],
@@ -107,7 +107,7 @@ const controller = {
 
     getOperationsByCategory: async (req, res) => {
         let id = req.params.id !== "null" ? req.params.id : null;
-        let userId = 1; //RECIBIR POR PARAM DESDE EL FRONT
+        let userId = req.userId; //RECIBIR POR PARAM DESDE EL FRONT
         try {
             let operations = await Operation.findAll({
                 include: ["operation_type", "operation_category"],
@@ -143,7 +143,8 @@ const controller = {
 
     getActualBalance: async (req, res) => {
         try {
-            let userId = 1; //RECIBIR POR PARAM DESDE EL FRONT
+            // req.userId se obtiene desde el verifyJWT donde se decodea el token
+            let userId = req.userId;
             let incomesOperations = await Operation.findAll({
                 where: {
                     operation_type_id: 1,
@@ -188,6 +189,7 @@ const controller = {
 
     newOperation: async (req, res) => {
         try {
+            let userId = req.userId;
             let category =
                 req.body.operation_category_id !== ""
                     ? req.body.operation_category_id
@@ -197,7 +199,7 @@ const controller = {
                 concept: req.body.concept,
                 amount: parseFloat(req.body.amount),
                 date: req.body.date,
-                user_id: req.body.user_id,
+                user_id: userId,
                 operation_category_id: category,
                 operation_type_id: req.body.operation_type_id,
             });
@@ -215,7 +217,7 @@ const controller = {
                 req.body.operation_category_id !== ""
                     ? req.body.operation_category_id
                     : null;
-            console.log(req.body);
+
             await Operation.update(
                 {
                     concept: req.body.concept,
@@ -238,7 +240,6 @@ const controller = {
 
     deleteOperation: async (req, res) => {
         try {
-            console.log(req.body.id);
             await Operation.destroy({
                 where: {
                     id: req.body.id,

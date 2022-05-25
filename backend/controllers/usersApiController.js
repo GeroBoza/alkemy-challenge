@@ -1,47 +1,48 @@
-// const bcrypt = require("bcrypt");
-
 const { User } = require("../database/models");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const controller = {
     login: async (req, res) => {
         try {
-            let errors = validationResult(req);
-
-            if (errors.isEmpty()) {
-                let user = await User.findOne({
-                    where: { email: req.body.email },
-                });
-                if (user != undefined) {
-                    if (bcrypt.compareSync(req.body.password, user.password)) {
-                        var userToLogIn = user;
-                    } else {
-                        res.status(400);
-                        return res.send("Invalid password");
-                    }
-                } else {
-                    res.status(400);
-                    return res.send("Invalid email");
+            const user = await User.findOne({
+                where: {
+                    email: req.body.email,
+                },
+            });
+            if (user) {
+                if (!bcrypt.compareSync(req.body.password, user.password)) {
+                    return res.json({
+                        auth: false,
+                        message: "Ocurrió un error, intente nuevamente",
+                    });
                 }
-                // req.session.loggedUser = userToLogIn;
-                // if (req.body.remember != undefined) {
-                //     res.cookie("remember", userToLogIn.email, {
-                //         maxAge: 3600000,
-                //     });
-                // }
-                // res.redirect("/");
-                return res.status(200);
+                let userToReturn = {
+                    id: user.id,
+                    email: user.email,
+                };
+
+                const token = jwt.sign(userToReturn, "secret-token", {
+                    expiresIn: "1d",
+                });
+                return res.json({ auth: true, token });
+                // res.status(200).send(userToReturn);
             } else {
-                return res.status(400);
+                return res.json({
+                    auth: false,
+                    message: "Usuario o contraseña incorrectos",
+                });
             }
-        } catch (errors) {
-            res.send(errors);
+        } catch (error) {
+            return res.json({
+                auth: false,
+                message: "Ocurrió un error, intente nuevamente",
+            });
         }
     },
 
     register: async (req, res) => {
         try {
-            const errors = validationResult(req);
-
             let userDB = await User.findOne({
                 where: {
                     email: req.body.email,
@@ -49,27 +50,26 @@ const controller = {
             });
 
             if (userDB != null) {
-                res.status(400);
-                return res.send("User exists");
-            }
-
-            if (req.body.password != req.body.password2) {
-                res.status(400);
-                return res.send("Passwords do not match");
-            }
-
-            if (errors.isEmpty()) {
-                await User.create({
-                    name: req.body.name,
-                    phone: req.body.phone,
-                    email: req.body.email,
-                    password: bcrypt.hashSync(req.body.password, 10),
+                return res.json({
+                    register: false,
+                    message: "El usuario ya se encuentra registrado",
                 });
-                return res.status(200);
-            } else {
-                return res.status(400);
             }
+
+            // if (req.body.password != req.body.password2) {
+            //     res.status(400);
+            //     return res.send("Passwords do not match");
+            // }
+
+            await User.create({
+                name: req.body.name,
+                phone: req.body.phone,
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password, 10),
+            });
+            return res.json({ status: 200, register: true });
         } catch (error) {
+            res.status(400);
             res.send(error);
         }
     },
