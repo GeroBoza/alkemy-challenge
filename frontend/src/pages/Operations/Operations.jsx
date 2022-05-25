@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Alert,
@@ -26,8 +26,12 @@ import {
 } from "../../utils/getDataFromServer";
 import axios from "axios";
 
+import { AuthContext } from "../../context/AuthContext";
+
 const Operations = () => {
     const navigate = useNavigate();
+
+    const [auth, setAuth] = useContext(AuthContext);
 
     const [inOperations, setInOperations] = useState([]);
     const [outOperations, setOutOperations] = useState([]);
@@ -57,11 +61,11 @@ const Operations = () => {
     };
 
     async function fetchOperationsByTypeIn() {
-        const inOperations = await getOperationsByType(1);
+        const inOperations = await getOperationsByType(1, auth);
         setInOperations(inOperations);
     }
     async function fetchOperationsByTypeOut() {
-        const outOperations = await getOperationsByType(2);
+        const outOperations = await getOperationsByType(2, auth);
         setOutOperations(outOperations);
     }
     useEffect(() => {
@@ -76,7 +80,7 @@ const Operations = () => {
     }, []);
 
     const fetchOperationsByCategory = async (id) => {
-        const fetchCategoryOperations = await getOperationsByCategory(id);
+        const fetchCategoryOperations = await getOperationsByCategory(id, auth);
         setCategoryOperations(fetchCategoryOperations);
 
         if (id === "null") {
@@ -88,14 +92,13 @@ const Operations = () => {
     };
 
     const handleDelete = async (id) => {
-        // console.log(id);
         setShowLoader(true);
         try {
             const res = await axios.post(
                 "http://localhost:3000/operations/delete",
                 { id }
             );
-            console.log(res);
+
             if (res.status === 200) {
                 setShowAlertOk(true);
                 setShowLoader(false);
@@ -227,7 +230,7 @@ const Operations = () => {
                 )}
 
                 {selectedValue === "type" ? (
-                    <Grid item xs={12}>
+                    <Grid item xs={12} paddingBottom={5}>
                         <Typography variant="h4" marginTop={3} marginBottom={3}>
                             Ingresos
                         </Typography>

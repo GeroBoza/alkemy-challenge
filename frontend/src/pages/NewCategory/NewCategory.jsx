@@ -12,14 +12,9 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-import { useNavigate } from "react-router-dom";
-
 import { getOperationCategories } from "../../utils/getDataFromServer";
-import OperationsTable from "../../components/OperationsTable/OperationsTable";
 
 const NewCategory = () => {
-    // const navigate = useNavigate();
-
     const [categoryName, setCategoryName] = useState("");
     const [formErrors, setFormErrors] = useState({
         name: false,
@@ -30,11 +25,6 @@ const NewCategory = () => {
     const [showLoader, setShowLoader] = useState(false);
     const [showAlertFail, setShowAlertFail] = useState(false);
     const [showAlertOk, setShowAlertOk] = useState(false);
-
-    const columns = [
-        { field: "id", headerName: "ID", width: 70 },
-        { field: "name", headerName: "Categoria", width: 180 },
-    ];
 
     const fetchOperationsCategories = async () => {
         const actualCategories = await getOperationCategories();
@@ -63,7 +53,7 @@ const NewCategory = () => {
                 "http://localhost:3000/categories/new",
                 { name: categoryName }
             );
-            console.log(res);
+
             if (res.status === 200) {
                 setShowAlertOk(true);
                 setShowLoader(false);

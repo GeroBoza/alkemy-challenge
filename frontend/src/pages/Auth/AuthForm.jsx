@@ -1,10 +1,29 @@
-import { Container, TextField, Typography, Button, Grid } from "@mui/material";
-import { Box } from "@mui/system";
-import React, { useState } from "react";
+import {
+    Container,
+    TextField,
+    Typography,
+    Button,
+    Grid,
+    Alert,
+    Backdrop,
+    CircularProgress,
+} from "@mui/material";
+import React, { useContext, useState } from "react";
 import GenericForm from "../../components/GenericForm/GenericForm";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const AuthForm = () => {
-    const [mode, setMode] = useState("signUp");
+    const navigate = useNavigate();
+
+    const [auth, setAuth] = useContext(AuthContext);
+
+    const [mode, setMode] = useState("signIn");
+    const [showLoader, setShowLoader] = useState(false);
+    const [showAlertFail, setShowAlertFail] = useState(false);
+    const [showAlertOk, setShowAlertOk] = useState(false);
+
     const [signUpFormValues, setSignUpFormValues] = useState({
         name: "",
         phone: "",
@@ -116,16 +135,49 @@ const AuthForm = () => {
         signIn();
     };
 
-    const signUp = () => {
+    const signUp = async () => {
         try {
-            console.log(signUpFormValues);
+            setShowLoader(true);
+            const res = await axios.post(
+                "http://localhost:3000/users/register",
+                signUpFormValues
+            );
+            setShowLoader(false);
+            if (res.data.register === true) {
+                setShowAlertOk(true);
+                setTimeout(() => {
+                    setShowAlertOk(false);
+                    setMode("signIn");
+                }, 3000);
+            } else {
+                setShowAlertFail(true);
+                setTimeout(() => {
+                    setShowAlertFail(false);
+                }, 3000);
+            }
         } catch (error) {
             console.log(error);
         }
     };
-    const signIn = () => {
+    const signIn = async () => {
         try {
-            console.log(signInFormValues);
+            setShowLoader(true);
+            const res = await axios.post(
+                "http://localhost:3000/users/login",
+                signInFormValues
+            );
+            setShowLoader(false);
+
+            if (res.data.auth === true) {
+                localStorage.setItem("jwt-token", res.data.token);
+                setAuth(res.data.token);
+                navigate("/");
+            } else {
+                setShowAlertFail(true);
+                setTimeout(() => {
+                    setShowAlertFail(false);
+                }, 3000);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -137,7 +189,7 @@ const AuthForm = () => {
     };
 
     return (
-        <Container sx={{ marginTop: "5%", width: "45%" }}>
+        <Container sx={{ marginTop: "7%", width: "45%" }}>
             {mode === "signUp" ? (
                 <>
                     <GenericForm
@@ -218,7 +270,33 @@ const AuthForm = () => {
                         </Typography>
                     )}
                 </Grid>
+
+                <Grid item xs={12}>
+                    {showAlertOk === true ? (
+                        <Alert severity="success">
+                            Operación creada con éxito!
+                        </Alert>
+                    ) : (
+                        ""
+                    )}
+                    {showAlertFail === true ? (
+                        <Alert severity="error">
+                            Ocurrió un error, intente nuevamente!
+                        </Alert>
+                    ) : (
+                        ""
+                    )}
+                </Grid>
             </Grid>
+            <Backdrop
+                sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={showLoader}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Container>
     );
 };

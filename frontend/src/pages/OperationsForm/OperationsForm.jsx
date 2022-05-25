@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {
@@ -20,10 +20,13 @@ import {
     getOperation,
 } from "../../utils/getDataFromServer";
 import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const OperationsForm = (props) => {
     const { mode } = props;
     const { id } = useParams();
+
+    const [auth, setAuth] = useContext(AuthContext);
 
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
@@ -56,7 +59,6 @@ const OperationsForm = (props) => {
             concept: operation.concept,
             amount: operation.amount,
             date: operation.date,
-            user_id: 1,
             operation_type_id: operation.operation_type.id,
             operation_category_id: operation.operation_category.id,
         });
@@ -117,7 +119,6 @@ const OperationsForm = (props) => {
         } else {
             setFormErrors({ ...formErrors, operation_type_id: false });
         }
-        console.log(formValues);
 
         saveData();
     };
@@ -128,7 +129,12 @@ const OperationsForm = (props) => {
         try {
             const res = await axios.post(
                 `http://localhost:3000/operations/${url}`,
-                formValues
+                formValues,
+                {
+                    headers: {
+                        Authorization: auth,
+                    },
+                }
             );
             if (res.status === 200) {
                 setShowAlertOk(true);

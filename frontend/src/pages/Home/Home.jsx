@@ -1,23 +1,26 @@
 import { Container, Grid, Typography } from "@mui/material";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import OperatiosTable from "../../components/OperationsTable/OperationsTable";
 import {
     getBalance,
     getLastTenOperations,
 } from "../../utils/getDataFromServer";
+import { AuthContext } from "../../context/AuthContext";
 
 const Home = () => {
+    const [auth, setAuth] = useContext(AuthContext);
+
     const [balance, setBalance] = useState(0);
     const [operations, setOperations] = useState([]);
 
     useEffect(() => {
         async function fetchOperationsBalance() {
-            const balance = await getBalance();
+            const balance = await getBalance(auth);
             setBalance(balance);
         }
         async function fetchAllOperations() {
-            const lastTen = await getLastTenOperations();
+            const lastTen = await getLastTenOperations(auth);
             setOperations(lastTen);
         }
 
