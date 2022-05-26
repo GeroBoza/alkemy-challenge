@@ -25,7 +25,7 @@ const controller = {
                 const token = jwt.sign(userToReturn, "secret-token", {
                     expiresIn: "1d",
                 });
-                return res.json({ auth: true, token });
+                return res.json({ auth: true, token, username: user.name });
                 // res.status(200).send(userToReturn);
             } else {
                 return res.json({

@@ -39,7 +39,7 @@ module.exports = {
                     },
                     key: "id",
                 },
-                allowNull: false,
+                allowNull: true,
             },
             operation_type_id: {
                 type: DataTypes.INTEGER,

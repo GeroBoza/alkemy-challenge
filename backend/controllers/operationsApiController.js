@@ -199,6 +199,8 @@ const controller = {
                 req.body.operation_category_id !== ""
                     ? req.body.operation_category_id
                     : null;
+            // console.log(category);
+            // return;
 
             Operation.create({
                 concept: req.body.concept,

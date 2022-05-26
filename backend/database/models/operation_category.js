@@ -17,6 +17,10 @@ module.exports = (sequelize, dataTypes) => {
             as: "operations",
             foreignKey: "operation_category_id",
         });
+        Operation_category.belongsTo(models.User, {
+            as: "user",
+            foreignKey: "user_id",
+        });
     };
 
     return Operation_category;

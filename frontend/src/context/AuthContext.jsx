@@ -6,9 +6,13 @@ export const AuthProvider = (props) => {
     const [auth, setAuth] = useState(
         localStorage.getItem("jwt-token") || false
     );
+    const [userName, setUserName] = useState(
+        localStorage.getItem("userName") || ""
+    );
+    // const [userName, setUserName] = useState("");
     return (
         // <AuthContext.Provider value={[auth, setAuth]}>
-        <AuthContext.Provider value={{ auth, setAuth }}>
+        <AuthContext.Provider value={{ auth, setAuth, userName, setUserName }}>
             {props.children}
         </AuthContext.Provider>
     );

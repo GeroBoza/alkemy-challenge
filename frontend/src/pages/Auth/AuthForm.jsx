@@ -17,7 +17,7 @@ import { useAuth } from "../../context/AuthContext";
 const AuthForm = () => {
     const navigate = useNavigate();
 
-    const { setAuth } = useAuth();
+    const { setAuth, setUserName } = useAuth();
 
     const [mode, setMode] = useState("signIn");
     const [showLoader, setShowLoader] = useState(false);
@@ -148,7 +148,7 @@ const AuthForm = () => {
                 setTimeout(() => {
                     setShowAlertOk(false);
                     setMode("signIn");
-                }, 3000);
+                }, 2000);
             } else {
                 setShowAlertFail(true);
                 setTimeout(() => {
@@ -170,7 +170,10 @@ const AuthForm = () => {
 
             if (res.data.auth === true) {
                 localStorage.setItem("jwt-token", res.data.token);
+                localStorage.setItem("userName", res.data.username);
                 setAuth(res.data.token);
+                setUserName(res.data.username);
+
                 navigate("/");
             } else {
                 setShowAlertFail(true);

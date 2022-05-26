@@ -26,7 +26,7 @@ const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
-    const { setAuth } = useAuth();
+    const { setAuth, userName } = useAuth();
 
     const navigate = useNavigate();
 
@@ -138,6 +138,7 @@ const Navbar = () => {
                         sx={{
                             flexGrow: 1,
                             display: { xs: "none", md: "flex" },
+                            borderLeft: "4px solid #ffffff33",
                         }}
                     >
                         {pages.map((page) => (
@@ -154,7 +155,16 @@ const Navbar = () => {
                         ))}
                     </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box
+                        sx={{
+                            flexGrow: 0,
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography variant="p" color="white" marginRight={2}>
+                            Hola {userName}!
+                        </Typography>
                         <Tooltip title="Open settings">
                             <AccountCircleIcon
                                 onClick={handleOpenUserMenu}

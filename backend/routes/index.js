@@ -16,6 +16,6 @@ router.use("/operations", verifyJWT, operationsApiRouter);
 router.use("/types", operationsTypesApiRouter);
 
 // Operations Categories API routes
-router.use("/categories", operationsCategoriesApiRouter);
+router.use("/categories", verifyJWT, operationsCategoriesApiRouter);
 
 module.exports = router;

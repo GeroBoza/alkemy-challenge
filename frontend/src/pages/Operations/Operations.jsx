@@ -70,7 +70,8 @@ const Operations = () => {
     }
     useEffect(() => {
         async function fetchAllCategories() {
-            const categories = await getOperationCategories();
+            const categories = await getOperationCategories(auth);
+            categories.push({ id: "null", name: "Sin categoría" });
             setCategories(categories);
         }
 
@@ -96,7 +97,12 @@ const Operations = () => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/operations/delete",
-                { id }
+                { id },
+                {
+                    headers: {
+                        Authorization: auth,
+                    },
+                }
             );
 
             if (res.status === 200) {
@@ -212,17 +218,20 @@ const Operations = () => {
                                 fetchOperationsByCategory(evt.target.value);
                             }}
                         >
-                            {categories.length !== 0
-                                ? categories.map((category) => (
-                                      <MenuItem
-                                          key={category.id}
-                                          value={category.id}
-                                      >
-                                          {category.name}
-                                      </MenuItem>
-                                  ))
-                                : ""}
-                            <MenuItem value="null">Sin categoría</MenuItem>
+                            {categories.length !== 0 ? (
+                                categories.map((category) => (
+                                    <MenuItem
+                                        key={category.id}
+                                        value={category.id}
+                                    >
+                                        {category.name}
+                                    </MenuItem>
+                                ))
+                            ) : (
+                                <MenuItem disabled>
+                                    No hay categorias para seleccionar
+                                </MenuItem>
+                            )}
                         </TextField>
                     </Grid>
                 ) : (

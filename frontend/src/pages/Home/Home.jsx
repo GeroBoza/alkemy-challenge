@@ -55,22 +55,26 @@ const Home = () => {
                         padding={3}
                         textTransform={"uppercase"}
                     >
-                        Balance total: {balance}
+                        Balance total:{" "}
+                        <span style={{ color: "#1876d1" }}>$ {balance}</span>
                     </Typography>
                 </Grid>
-
-                <Grid item xs={12}>
+                {operations.length !== 0 ? (
                     <Grid item xs={12}>
-                        <Typography variant="p" fontWeight={"bold"}>
-                            Últimas 10 operaciones:
-                        </Typography>
+                        <Grid item xs={12}>
+                            <Typography variant="p" fontWeight={"bold"}>
+                                Últimas 10 operaciones:
+                            </Typography>
+                        </Grid>
+                        <OperatiosTable
+                            rows={operations}
+                            columns={columns}
+                            height={650}
+                        ></OperatiosTable>
                     </Grid>
-                    <OperatiosTable
-                        rows={operations}
-                        columns={columns}
-                        height={650}
-                    ></OperatiosTable>
-                </Grid>
+                ) : (
+                    "No tienes operaciones cargadas"
+                )}
             </Grid>
         </Container>
     );

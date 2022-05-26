@@ -13,8 +13,11 @@ import {
 import axios from "axios";
 
 import { getOperationCategories } from "../../utils/getDataFromServer";
+import { useAuth } from "../../context/AuthContext";
 
 const NewCategory = () => {
+    const { auth } = useAuth();
+
     const [categoryName, setCategoryName] = useState("");
     const [formErrors, setFormErrors] = useState({
         name: false,
@@ -26,10 +29,10 @@ const NewCategory = () => {
     const [showAlertFail, setShowAlertFail] = useState(false);
     const [showAlertOk, setShowAlertOk] = useState(false);
 
-    const fetchOperationsCategories = async () => {
-        const actualCategories = await getOperationCategories();
+    async function fetchOperationsCategories() {
+        const actualCategories = await getOperationCategories(auth);
         setCategories(actualCategories);
-    };
+    }
 
     useEffect(() => {
         fetchOperationsCategories();
@@ -51,7 +54,12 @@ const NewCategory = () => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/categories/new",
-                { name: categoryName }
+                { name: categoryName },
+                {
+                    headers: {
+                        Authorization: auth,
+                    },
+                }
             );
 
             if (res.status === 200) {

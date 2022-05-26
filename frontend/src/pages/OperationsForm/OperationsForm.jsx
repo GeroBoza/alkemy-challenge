@@ -58,7 +58,7 @@ const OperationsForm = (props) => {
             setOperationTypes(types);
         }
         async function fetchOperationsCategories() {
-            const categories = await getOperationCategories();
+            const categories = await getOperationCategories(auth);
             setOperationCategories(categories);
         }
 
@@ -74,7 +74,10 @@ const OperationsForm = (props) => {
                 amount: res.amount,
                 date: res.date,
                 operation_type_id: res.operation_type.id,
-                operation_category_id: res.operation_category.id,
+                operation_category_id:
+                    res.operation_category_id !== null
+                        ? res.operation_category_id
+                        : "",
             });
         };
 
@@ -142,9 +145,10 @@ const OperationsForm = (props) => {
             if (res.status === 200) {
                 setShowAlertOk(true);
                 setShowLoader(false);
+
                 setTimeout(() => {
                     navigate("/");
-                }, 3000);
+                }, 1500);
             }
         } catch (error) {
             setShowLoader(false);
@@ -247,7 +251,6 @@ const OperationsForm = (props) => {
                 </TextField>
                 <TextField
                     error={formErrors.operation_category_id}
-                    required
                     fullWidth
                     select
                     label="Categoria"

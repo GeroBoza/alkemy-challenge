@@ -21,6 +21,7 @@ export async function getLastTenOperations(token) {
 }
 
 export async function getOperation(id, token) {
+    console.log(id);
     const getResult = await fetch(`http://localhost:3000/operations/${id}`, {
         headers: {
             Authorization: token,
@@ -51,8 +52,12 @@ export async function getOperationTypes() {
 
     return operationTypes;
 }
-export async function getOperationCategories() {
-    const getResult = await fetch(`http://localhost:3000/categories`);
+export async function getOperationCategories(token) {
+    const getResult = await fetch(`http://localhost:3000/categories`, {
+        headers: {
+            Authorization: token,
+        },
+    });
     const operationCategories = await getResult.json();
 
     return operationCategories;

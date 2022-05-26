@@ -12,6 +12,17 @@ module.exports = {
             name: {
                 type: DataTypes.STRING,
             },
+            user_id: {
+                type: DataTypes.INTEGER,
+                references: {
+                    model: {
+                        tableName: "users",
+                        // schema: "schema",
+                    },
+                    key: "id",
+                },
+                allowNull: false,
+            },
         });
     },
 
