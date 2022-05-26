@@ -21,7 +21,6 @@ export async function getLastTenOperations(token) {
 }
 
 export async function getOperation(id, token) {
-    console.log(id);
     const getResult = await fetch(`http://localhost:3000/operations/${id}`, {
         headers: {
             Authorization: token,

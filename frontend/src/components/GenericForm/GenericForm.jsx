@@ -30,7 +30,6 @@ const GenericForm = (props) => {
                 <TextField
                     key={i}
                     error={formErrors[field.value]}
-                    // helperText="No puede estar vacio"
                     type={field.value === "password" ? "password" : "text"}
                     required
                     fullWidth
@@ -41,7 +40,6 @@ const GenericForm = (props) => {
                         const { name, value } = evt.target;
                         changeValues(name, value);
                         resetErrors(field.value);
-                        // setFormErrors({ ...formErrors, concept: false });
                     }}
                 />
             ))}
