@@ -136,11 +136,15 @@ const NewCategory = () => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <ul>
-                        {categories.map((category) => (
-                            <li key={category.id}>{category.name}</li>
-                        ))}
-                    </ul>
+                    {categories.length !== 0 ? (
+                        <ul>
+                            {categories.map((category) => (
+                                <li key={category.id}>{category.name}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        "No hay categorías agregadas"
+                    )}
                 </Grid>
             </Grid>
         </Container>
